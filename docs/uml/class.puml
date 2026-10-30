@@ -1,0 +1,68 @@
+@startuml
+title COLORS - Class Diagram (Data Entities and Script Modules)
+skinparam classAttributeIconSize 0
+hide empty members
+
+package "Browser" {
+  class "index.html" as LoginPage <<page>>
+  class "color.html" as ColorPage <<page>>
+  class "js/code.js" as Client <<script module>> {
+    urlBase : string
+    extension : string
+    userId : number
+    firstName : string
+    lastName : string
+    doLogin()
+    saveCookie()
+    readCookie()
+    doLogout()
+    addColor()
+    searchColor()
+  }
+}
+
+package "PHP API" {
+  class "Login.php" as LoginAPI <<script module>> {
+    getRequestInfo()
+    sendResultInfoAsJson(obj)
+    returnWithError(err)
+    returnWithInfo(firstName, lastName, id)
+  }
+  class "AddColor.php" as AddAPI <<script module>> {
+    getRequestInfo()
+    sendResultInfoAsJson(obj)
+    returnWithError(err)
+  }
+  class "SearchColors.php" as SearchAPI <<script module>> {
+    getRequestInfo()
+    sendResultInfoAsJson(obj)
+    returnWithError(err)
+    returnWithInfo(searchResults)
+  }
+}
+
+package "COP4331 MySQL Database" {
+  class User <<table: Users>> {
+    ID : INT <<PK, AUTO_INCREMENT>>
+    FirstName : VARCHAR(50)
+    LastName : VARCHAR(50)
+    Login : VARCHAR(50)
+    Password : VARCHAR(50)
+  }
+  class Color <<table: Colors>> {
+    ID : INT <<PK, AUTO_INCREMENT>>
+    Name : VARCHAR(50)
+    UserID : INT
+  }
+  User "1" -- "0..*" Color : owns (logical association)
+}
+
+LoginPage ..> Client : doLogin()
+ColorPage ..> Client : readCookie(), addColor(),\nsearchColor(), doLogout()
+Client ..> LoginAPI : POST {login, password}
+Client ..> AddAPI : POST {color, userId}
+Client ..> SearchAPI : POST {search, userId}
+LoginAPI ..> User : SELECT by Login and Password
+AddAPI ..> Color : INSERT UserId and Name
+SearchAPI ..> Color : SELECT Name by LIKE and UserID
+@enduml

@@ -1,0 +1,17 @@
+@startuml
+title COLORS - Use Case Diagram
+left to right direction
+actor User
+
+rectangle "COLORS web application" {
+  usecase "Log in" as Login
+  usecase "Add a color" as Add
+  usecase "Search own colors" as Search
+  usecase "Log out" as Logout
+}
+
+User --> Login
+User --> Add
+User --> Search
+User --> Logout
+@enduml

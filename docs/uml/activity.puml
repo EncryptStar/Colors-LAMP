@@ -1,0 +1,108 @@
+@startuml
+title COLORS - Activity Diagram
+start
+partition Browser {
+  :Open index.html;
+}
+repeat
+  partition User {
+    :Enter login and password;
+    :Click login;
+  }
+  partition Browser {
+    :POST credentials to Login.php;
+  }
+  partition "PHP API / MySQL" {
+    :Connect to COP4331;
+    if (Connection available?) then (yes)
+      :Query Users by Login and Password;
+      if (Matching user?) then (yes)
+        :Return id, firstName, lastName,
+        and empty error;
+      else (no)
+        :Return id = 0 and No Records Found;
+      endif
+    else (no)
+      :Return id = 0 and connection error;
+    endif
+  }
+  partition Browser {
+    if (Returned id < 1?) then (yes)
+      :Display incorrect credentials message;
+    else (no)
+      :Save user details in a cookie
+      with a 20-minute expiry;
+    endif
+  }
+repeat while (Returned id < 1?) is (yes) not (no)
+
+partition Browser {
+  :Navigate to color.html;
+  :Read user details from cookie;
+  if (userId < 0?) then (yes)
+    :Redirect to index.html;
+    stop
+  endif
+}
+
+repeat
+  partition User {
+    :Choose an action;
+  }
+  if (Action?) then (Add color)
+    partition Browser {
+      :Read color text;
+      :POST color and userId to AddColor.php;
+    }
+    partition "PHP API / MySQL" {
+      :Connect to COP4331;
+      if (Connection available?) then (yes)
+        :Execute INSERT into Colors (UserId, Name);
+        :Return empty error;
+      else (no)
+        :Return connection error;
+      endif
+    }
+    partition Browser {
+      :On HTTP 200, display
+      Color has been added;
+    }
+  elseif (Action?) then (Search colors)
+    partition Browser {
+      :Read search text;
+      :POST search and userId to SearchColors.php;
+    }
+    partition "PHP API / MySQL" {
+      :Connect to COP4331;
+      if (Connection available?) then (yes)
+        :Query Colors where Name LIKE '%search%'
+        and UserID = supplied userId;
+        if (Matches found?) then (yes)
+          :Return results array of color names;
+        else (no)
+          :Return No Records Found
+          without a results array;
+        endif
+      else (no)
+        :Return connection error
+        without a results array;
+      endif
+    }
+    partition Browser {
+      :On HTTP 200, display retrieval message
+      and parse response;
+      if (Response contains results?) then (yes)
+        :Display color names;
+      else (no)
+        :Callback fails when accessing results.length;
+      endif
+    }
+  else (Log out)
+    partition Browser {
+      :Reset user details and expire cookie;
+      :Redirect to index.html;
+    }
+  endif
+repeat while (Action was not Log out?) is (yes) not (no)
+stop
+@enduml
