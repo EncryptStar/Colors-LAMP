@@ -1,0 +1,31 @@
+{
+  "name": "poosd_vercontproj",
+  "version": "1.0.0",
+  "description": "This is a web application which allows users to store colors (or any short string of text) on a database. A user can then search for a color in their own list to retreive.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EncryptStar/Colors-LAMP.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EncryptStar/Colors-LAMP/issues"
+  },
+  "homepage": "https://github.com/EncryptStar/Colors-LAMP#readme",
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
+    "html-validate": "^11.18.0",
+    "stylelint": "^17.16.0",
+    "stylelint-config-standard": "^40.0.0"
+  }
+}
