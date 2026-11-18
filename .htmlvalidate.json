@@ -1,4 +1,3 @@
 {
-  "extends": ["html-validate:recommended"],
-  "exclude": ["node_modules"]
+  "extends": ["html-validate:recommended"]
 }
