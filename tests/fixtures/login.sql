@@ -10,4 +10,4 @@ CREATE TABLE Users (
 );
 
 INSERT INTO Users (ID, FirstName, LastName, Login, Password)
-VALUES (1, 'Jest', 'User', 'jest-user', 'jest-password');
+VALUES (1, 'Jest', 'User', 'jest-use', 'jest-password');
