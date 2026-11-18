@@ -7,7 +7,9 @@
     "doc": "docs"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --runInBand",
+    "test:unit": "npm test -- --testMatch '**/tests/**/*.unit.test.cjs'",
+    "test:integration": "npm test -- --testMatch '**/tests/**/*.integration.test.cjs'",
     "lint:html": "html-validate \"**/*.html\"",
     "lint:css": "stylelint \"**/*.css\"",
     "lint:js": "eslint \"**/*.js\"",
@@ -29,6 +31,8 @@
     "eslint": "^10.14.0",
     "globals": "^17.14.0",
     "html-validate": "^11.18.0",
+    "jest": "^30.5.2",
+    "jest-environment-jsdom": "^30.5.2",
     "stylelint": "^17.16.0",
     "stylelint-config-standard": "^40.0.0"
   }
